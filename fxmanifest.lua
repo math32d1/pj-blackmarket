@@ -4,29 +4,31 @@ lua54 'yes'
 
 version '1.0.3'
 
-description "PJ-Blackmarket for esx"
+description "PJ-Blackmarket for VRP"
 
-author "PJ-Scripts"
+author "PJ-Scripts x Dallefar"
 
 ui_page 'https://pj-blackmarket.vercel.app'
 
+dependency "vrp"
+
 server_scripts {
+	"@vrp/lib/utils.lua",
 	'config.lua',
 	'server/*.lua',
 }
 
 client_scripts {
-	'cl_config.lua',
-	'client/*.lua'
+	"lib/Proxy.lua",
+	"lib/Tunnel.lua",
+	"client/cl_config.lua",
+	'client/client.lua',
+	'client/functions.lua'
 }
 
 shared_scripts {
-	'strings.lua'
+	'strings.lua',
 }
 
 
-dependencies {
-	'es_extended',
-	'qtarget'
-}
 

@@ -1,3 +1,10 @@
+local Tunnel = module("vrp", "lib/Tunnel")
+local Proxy = module("vrp", "lib/Proxy")
+
+vRP = Proxy.getInterface("vRP")
+vRPclient = Tunnel.getInterface("vRP","pj-blackmarket") 
+
+
 HT = nil
 TriggerEvent('HT_base:getBaseObjects', function(obj)
     HT = obj
@@ -20,23 +27,23 @@ HT.RegisterServerCallback("pj-blackmarket:canOpen", function(source, cb, locatio
     end
 end)
 
-CreateThread(function ()
-    print('^1/////////////////////////////////////////////////////////////////////////////////////////////////')
-    print('^4PJ-blackmarket: KØRE! Lokation for denne session: '..Config.randomLocation.coords)
-    print('^1/////////////////////////////////////////////////////////////////////////////////////////////////^0')
-end)
 
 RegisterServerEvent('pj-blackmarket:item')
 AddEventHandler('pj-blackmarket:item', function(itemName, amount)
-    local source = source
+    local player = source
+    local ped = GetPlayerPed(player)
+    local playerCoords = GetEntityCoords(ped)
     local xPlayer = vRP.getUserId({source})
-	local getcoords = GetEntityCoords(soruce)
-    local dist = #(Config.randomLocation.coords - getcoords)
+    local dist = #(Config.randomLocation.coords - playerCoords) -- Line 37
+    if itemName then
+        print("wbody|" .. itemName)
+    end
     amount = Round(amount)
     if amount < 0 or dist >= 10 then
         sendToDiscord(Strings['exploit_title'], (Strings['exploit_message']):format(xPlayer), 15548997)
         print('pj-blackmarket: ' .. xPlayer .. ' forsøgte at bruge exploit på blackmarket!')
-        vRP.kick({source, Strings['kick_msg']})
+        vRP.ban({xPlayer,Strings['kick_msg'],true})
+        --vRP.kick({source, Strings['kick_msg']})
         return
     end
     local price = 0
@@ -52,32 +59,31 @@ AddEventHandler('pj-blackmarket:item', function(itemName, amount)
             break
         end
     end
+    local xMoney = 0
     price = price * amount
     if Config.PayAccount == "black_money" then
-        local xMoney = vRP.getInventoryItemAmount(xPlayer, idname)
-
-        local xMoney = vRP.getBankMoney({xPlayer})
-        if xMoney >= price then
+        xMoney = vRP.getInventoryItemAmount(xPlayer, "dirty_money")
+    elseif Config.PayAccount == "bank" then
+        xMoney = vRP.getBankMoney({xPlayer})
+    elseif Config.PayAccoint == "money" then
+        xMoney = vRP.getMoney({xPlayer})
+    end
+        if xMoney >= price then -- line 68
             vRP.tryFullPayment({xPlayer, price})
             if itemType == 'weapon' then
+                vRP.giveInventoryItem({xPlayer, "wbody|" .. itemName, amount, true})
+            elseif itemType == 'ammo' then
+                vRP.giveInventoryItem({xPlayer, "wammo|" .. itemName, amount, true})
+            else
                 vRP.giveInventoryItem({xPlayer, itemName, amount, true})
             end
-            local args = vRP.parseItem(itemName) 
-            local item = vRP.items[args[1]] 
-
-            if item ~= nil then
-                local itemName = vRP.computeItemName(item, args)
-                local itemDescription = vRP.computeItemDescription(item, args)
-                local itemWeight = vRP.computeItemWeight(item, args)
-            end
             local label = itemName
-            sendToDiscord(Strings['purchase_title'], (Strings['purchase_message']):format(xPlayer, amount, itemName, GroupDigits(price), 5763719))
+            sendToDiscord(Strings['purchase_title'], (Strings['purchase_message']):format(xPlayer, amount, itemLabel, GroupDigits(price), 5763719))
             TriggerClientEvent('pj-blackmarket:notify', source, (Strings['purchase_notify']):format(amount, label, GroupDigits(price)))
         else
             local missingMoney = price - xMoney
             TriggerClientEvent('pj-blackmarket:notify', source, (Strings['not_enough_notify']):format((GroupDigits(missingMoney))))
         end
-    end
 end)
 
 RegisterServerEvent('pj-blackmarket:later')
@@ -85,7 +91,8 @@ AddEventHandler('pj-blackmarket:later', function()
     local xPlayer = vRP.getUserId({source})
     sendToDiscord(Strings['exploit_title'], (Strings['exploit_message']):format(xPlayer), 15548997)
     print('pj-blackmarket: ' .. xPlayer .. ' forsøgte at bruge exploit på blackmarket!')
-    vRP.kick({source, Strings['kick_msg']})
+    vRP.ban({xPlayer,Strings['kick_msg'],true})
+    --vRP.kick({source, Strings['kick_msg']})
 end)
 
 function sendToDiscord(name, message, color) 
@@ -102,6 +109,11 @@ function sendToDiscord(name, message, color)
     PerformHttpRequest(Config.WebhookLink, function(err, text, headers) end, 'POST', json.encode({username = 'PJ-BlackMarket', embeds = connect, avatarrl = 'https://media.discordapp.net/attachments/949247950419271680/1184883171813249135/image.png?ex=65a00c72&is=658d9772&hm=33d55bd7be133dacccdf3a9df01412707f52cb3702a94506f9a5bce7640b87c7&=&format=webp&quality=lossless'}), { ['Content-Type'] = 'application/json' })
 end
 
+CreateThread(function ()
+    print('^1/////////////////////////////////////////////////////////////////////////////////////////////////')
+    print('^4PJ-blackmarket: KØRE! Lokation for denne session: '..Config.randomLocation.coords)
+    print('^1/////////////////////////////////////////////////////////////////////////////////////////////////^0')
+end)
 
 function GroupDigits(number)
     local formattedNumber = tostring(number)

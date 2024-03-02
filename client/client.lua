@@ -84,6 +84,7 @@ CreateThread(function()
 		coords = vec3(Config.randomLocation.coords),
 		radius = 1,
 		debug = drawZones,
+		drawSprite = false,
 		options = {
 			{
 				icon = 'fa-solid fa-tag',
