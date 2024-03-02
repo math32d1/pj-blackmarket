@@ -10,7 +10,10 @@ author "PJ-Scripts x Dallefar"
 
 ui_page 'https://pj-blackmarket.vercel.app'
 
-dependency "vrp"
+dependencies {
+    'vrp',
+    'HT_base'
+}
 
 server_scripts {
 	"@vrp/lib/utils.lua",

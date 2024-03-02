@@ -34,16 +34,12 @@ AddEventHandler('pj-blackmarket:item', function(itemName, amount)
     local ped = GetPlayerPed(player)
     local playerCoords = GetEntityCoords(ped)
     local xPlayer = vRP.getUserId({source})
-    local dist = #(Config.randomLocation.coords - playerCoords) -- Line 37
-    if itemName then
-        print("wbody|" .. itemName)
-    end
+    local dist = #(Config.randomLocation.coords - playerCoords) 
     amount = Round(amount)
     if amount < 0 or dist >= 10 then
         sendToDiscord(Strings['exploit_title'], (Strings['exploit_message']):format(xPlayer), 15548997)
         print('pj-blackmarket: ' .. xPlayer .. ' forsøgte at bruge exploit på blackmarket!')
         vRP.ban({xPlayer,Strings['kick_msg'],true})
-        --vRP.kick({source, Strings['kick_msg']})
         return
     end
     local price = 0
@@ -92,7 +88,6 @@ AddEventHandler('pj-blackmarket:later', function()
     sendToDiscord(Strings['exploit_title'], (Strings['exploit_message']):format(xPlayer), 15548997)
     print('pj-blackmarket: ' .. xPlayer .. ' forsøgte at bruge exploit på blackmarket!')
     vRP.ban({xPlayer,Strings['kick_msg'],true})
-    --vRP.kick({source, Strings['kick_msg']})
 end)
 
 function sendToDiscord(name, message, color) 

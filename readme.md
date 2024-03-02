@@ -61,10 +61,6 @@ Spillere modtager notifikationer om vellykkede køb, utilstrækkelige midler og 
 
 Hvis du ønsker at bidrage til dette projekt, er du velkommen til at sende pull requests.
 
-
 ![Screenshot](screenshot.png)
 
-
-
-
-
+For at bruge dette script, skal du også have [HT-base](https://github.com/Just-Taco/HT-Base).
