@@ -4,7 +4,15 @@
 -- Author: PJ-Script
 -- License: MIT (https://opensource.org/licenses/MIT)
 
-ESX = exports['es_extended']:getSharedObject()
+HT = nil
+
+Citizen.CreateThread(function()
+    while HT == nil do
+        TriggerEvent('HT_base:getBaseObjects', function(obj) HT = obj end)
+        Citizen.Wait(0)
+    end
+end)
+
 Config = {}
 
 local function displayNUI(display)
@@ -38,18 +46,18 @@ CreateThread(function ()
 end)
 
 AddEventHandler("pj-blackmarket:getConfig", function ()
-    ESX.TriggerServerCallback("pj-blackmarket:configCallback", function (c)
+    HT.TriggerServerCallback("pj-blackmarket:configCallback", function (c)
         Config = c
     end)
 end)
 
 AddEventHandler("pj-blackmarket:getRandomLoc", function ()
-    ESX.TriggerServerCallback("pj-blackmarket:randomLocCB", function (c)
+    HT.TriggerServerCallback("pj-blackmarket:randomLocCB", function (c)
         Config.randomLocation = c
     end)
 end)
 
-AddEventHandler('esx:OnPlayerSpawn', function ()
+AddEventHandler('HT:OnPlayerSpawn', function ()
     if Config.MarketPed == nil then
         TriggerEvent("pj-blackmarket:getConfig")
     end
@@ -130,7 +138,7 @@ end)
 AddEventHandler('pj-blackmarket:openShop', function()
 	local playerPed = PlayerPedId()
 	local coords = GetEntityCoords(playerPed)
-	ESX.TriggerServerCallback('pj-blackmarket:canOpen', function(cb)
+	HT.TriggerServerCallback('pj-blackmarket:canOpen', function(cb)
 		if cb then
 			OpenBlackMarket()
 		elseif not cb then

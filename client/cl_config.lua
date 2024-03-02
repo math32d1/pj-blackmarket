@@ -4,7 +4,6 @@ Config.resourceName = GetCurrentResourceName()
 
 
 Config.PayAccount = 'money' -- Account du ville have black market skal bruge ('black_money', 'money', 'bank')
-Config.OldESX = false -- Sæt til true for at bruge ælder version af ESX
 Config.MarketPed = `a_m_m_og_boss_01` -- Jenkins hash af ped her
 
 
