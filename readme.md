@@ -12,7 +12,7 @@ Denne ressource muliggør en unik spilleroplevelse med blackmarket på din FiveM
 
 - Sort marked UI præsenteret som en tablet.
 - En pederstrian (ped), der fungerer som sort markedssælger.
-- Integration med ESX for styring af spillerkonti.
+- Integration med VRP for styring af spillerkonti.
 
 ## Installation
 
@@ -41,7 +41,7 @@ Denne ressource muliggør en unik spilleroplevelse med blackmarket på din FiveM
 
 - `MarketPed`: Ped-modellen til sort markedssælgeren.
 - `randomLocation`: Koordinater og retning for det tilfældige sted for sort marked.
-- `Items`: Konfiguration for de genstande, der er tilgængelige på det sorte marked.
+- `Items`: Konfiguration for de genstande, der er tilgængelige på det sorte marked. Du skal ikke skrive fx "wbody|WEAPON_GUSENBERG" Eller "wammo|WEAPON_GUSENBERG" Når du tilføjer items det gør script for dig.
 
 ### Webhook-konfiguration
 

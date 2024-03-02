@@ -14,20 +14,20 @@ Config.Locations = {
 		heading = 153.14
 	},
 
-	-- [2] = {
-	-- 	coords = vector3(289.8, -1204.34, 29.29),
-	-- 	heading = 275.48
-	-- },
+	[2] = {
+		coords = vector3(289.8, -1204.34, 29.29),
+		heading = 275.48
+	},
 
-	-- [3] = {
-	-- 	coords = vector3(-587.2, -1656.64, 19.36),
-	-- 	heading = 155.51
-	-- },
+	[3] = {
+		coords = vector3(-587.2, -1656.64, 19.36),
+		heading = 155.51
+	},
 
-	-- [4] = {
-	-- 	coords = vector3(57.89, -1733.11, 29.31),
-	-- 	heading = 59.03
-	-- },
+	[4] = {
+		coords = vector3(57.89, -1733.11, 29.31),
+		heading = 59.03
+	},
 }
 
 Config.randomLocation = Config.Locations[math.random(1,#Config.Locations)]
@@ -39,12 +39,6 @@ Config.Items = {
 		price = 19250,
 		type = 'weapon'
 	},
-	-- {
-	-- 	label = 'AP Pistol',
-	-- 	item = 'WEAPON_APPISTOL',
-	-- 	price = 112000,
-	-- 	type = 'weapon'
-	-- },
 	{
 		label = 'Gusenberg',
 		item = 'WEAPON_GUSENBERG',
