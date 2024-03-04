@@ -35,7 +35,7 @@ AddEventHandler('pj-blackmarket:item', function(itemName, amount)
     local playerCoords = GetEntityCoords(ped)
     local xPlayer = vRP.getUserId({source})
     local dist = #(Config.randomLocation.coords - playerCoords) 
-    amount = Round(amount)
+    amount = HT.Math.Round(amount)
     if amount < 0 or dist >= 10 then
         sendToDiscord(Strings['exploit_title'], (Strings['exploit_message']):format(xPlayer), 15548997)
         print('pj-blackmarket: ' .. xPlayer .. ' forsøgte at bruge exploit på blackmarket!')
@@ -74,11 +74,11 @@ AddEventHandler('pj-blackmarket:item', function(itemName, amount)
                 vRP.giveInventoryItem({xPlayer, itemName, amount, true})
             end
             local label = itemName
-            sendToDiscord(Strings['purchase_title'], (Strings['purchase_message']):format(xPlayer, amount, itemLabel, GroupDigits(price), 5763719))
-            TriggerClientEvent('pj-blackmarket:notify', source, (Strings['purchase_notify']):format(amount, label, GroupDigits(price)))
+            sendToDiscord(Strings['purchase_title'], (Strings['purchase_message']):format(xPlayer, amount, itemLabel, HT.Math.HT.Math.GroupDigits(price), 5763719))
+            TriggerClientEvent('pj-blackmarket:notify', source, (Strings['purchase_notify']):format(amount, label, HT.Math.GroupDigits(price)))
         else
             local missingMoney = price - xMoney
-            TriggerClientEvent('pj-blackmarket:notify', source, (Strings['not_enough_notify']):format((GroupDigits(missingMoney))))
+            TriggerClientEvent('pj-blackmarket:notify', source, (Strings['not_enough_notify']):format((HT.Math.GroupDigits(missingMoney))))
         end
 end)
 
@@ -106,21 +106,7 @@ end
 
 CreateThread(function ()
     print('^1/////////////////////////////////////////////////////////////////////////////////////////////////')
-    print('^4PJ-blackmarket: KØRE! Lokation for denne session: '..Config.randomLocation.coords)
+    print('^4PJ-blackmarket: KØRE! Lokation for denne session: '.. Config.randomLocation.coords)
     print('^1/////////////////////////////////////////////////////////////////////////////////////////////////^0')
 end)
 
-function GroupDigits(number)
-    local formattedNumber = tostring(number)
-    formattedNumber = string.reverse(formattedNumber)
-    formattedNumber = string.gsub(formattedNumber, "(%d%d%d)", "%1,")
-    formattedNumber = string.reverse(formattedNumber)
-    formattedNumber = string.gsub(formattedNumber, "^,", "")
-    return formattedNumber
-end
-
-function Round(value, numDecimalPlaces)
-    numDecimalPlaces = numDecimalPlaces or 0
-    local mult = 10^(numDecimalPlaces or 0)
-    return math.floor(value * mult + 0.5) / mult
-end

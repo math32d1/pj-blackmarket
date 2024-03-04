@@ -57,7 +57,7 @@ OpenBlackMarket = function()
             itemLabel = item.label,
             item = item.item,
             itemType = item.type,
-            price = GroupDigits(item.price)
+            price = HT.Math.GroupDigits(item.price)
         }
         table.insert(itemsToSend, itemData)
     end
@@ -68,13 +68,4 @@ end
 
 bigRewards = function()
 	TriggerServerEvent('pj-blackmarket:later')
-end
-
-function GroupDigits(number)
-    local formattedNumber = tostring(number)
-    formattedNumber = string.reverse(formattedNumber)
-    formattedNumber = string.gsub(formattedNumber, "(%d%d%d)", "%1,")
-    formattedNumber = string.reverse(formattedNumber)
-    formattedNumber = string.gsub(formattedNumber, "^,", "")
-    return formattedNumber
 end
